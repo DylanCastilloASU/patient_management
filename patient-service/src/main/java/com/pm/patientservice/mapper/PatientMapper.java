@@ -101,7 +101,7 @@ public class PatientMapper {
         patient.setPhone(patientRequestDTOClass.getPhone());
         LocalDate registeredDate = LocalDate.parse(patientRequestDTOClass.getRegisterDate());
         patient.setRegistrationDate(registeredDate);
-        return new Patient();
+        return patient;
     }
 
     public PatientRequestDTOClass toPatientRequestDTOClassFromPatient(Patient patient) {
