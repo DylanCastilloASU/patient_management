@@ -29,9 +29,9 @@ public class PatientService {
 
     //Standard PatientRepository method
     public PatientResponseDTOClass createPatient(PatientRequestDTOClass patientRequestDTOClass) {
-        Patient patient = patientMapper.toPatientFromPatientRequestDTOClass(patientRequestDTOClass);
-        patientRepository.save(patient);
-        return patientMapper.toPatientResponseDTOClassFromPatient(patient);
+        Patient newPatient = patientMapper.toPatientFromPatientRequestDTOClass(patientRequestDTOClass);
+        patientRepository.save(newPatient);
+        return patientMapper.toPatientResponseDTOClassFromPatient(newPatient);
 
     }
 
