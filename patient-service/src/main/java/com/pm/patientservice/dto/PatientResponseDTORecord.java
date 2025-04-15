@@ -1,6 +1,8 @@
 package com.pm.patientservice.dto;
 
 public record PatientResponseDTORecord(
+        String Id,
+
         String firstName,
 
         String lastName,
