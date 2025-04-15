@@ -8,6 +8,7 @@ import com.pm.patientservice.model.Patient;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 public class PatientMapper {
@@ -16,6 +17,7 @@ public class PatientMapper {
 
     public Patient toPatientFromPatientResponseDTORecord(PatientResponseDTORecord patientResponseDTO) {
         Patient patient = new Patient();
+        patient.setId(UUID.fromString(patientResponseDTO.Id()));
         patient.setFirstName(patientResponseDTO.firstName());
         patient.setLastName(patientResponseDTO.lastName());
         LocalDate dateOfBirth = LocalDate.parse(patientResponseDTO.dateOfBirth()); //ISO-8601 format yyyy-mm-dd
@@ -28,6 +30,7 @@ public class PatientMapper {
 
     public PatientResponseDTORecord toPatientResponseDTORecordFromPatient(Patient patient) {
         return new PatientResponseDTORecord(
+                patient.getId().toString(),
                 patient.getFirstName(),
                 patient.getLastName(),
                 patient.getDateOfBirth().toString(),//ISO-8601 format yyyy-mm-dd
@@ -41,6 +44,7 @@ public class PatientMapper {
 
     public Patient toPatientFromPatientResponseDTOClass(PatientResponseDTOClass patientResponseDTO) {
         Patient patient = new Patient();
+        patient.setId(UUID.fromString(patientResponseDTO.getId()));
         patient.setFirstName(patientResponseDTO.getFirstName());
         patient.setLastName(patientResponseDTO.getLastName());
         LocalDate dateOfBirth = LocalDate.parse(patientResponseDTO.getDateOfBirth()); //ISO-8601 format yyyy-mm-dd
@@ -53,6 +57,7 @@ public class PatientMapper {
 
     public PatientResponseDTOClass toPatientResponseDTOClassFromPatient(Patient patient) {
         PatientResponseDTOClass patientResponseDTOClass = new PatientResponseDTOClass();
+        patientResponseDTOClass.setId(patient.getId().toString());
         patientResponseDTOClass.setFirstName(patient.getFirstName());
         patientResponseDTOClass.setLastName(patient.getLastName());
         patientResponseDTOClass.setDateOfBirth(patient.getDateOfBirth().toString()); //ISO-8601 format yyyy-mm-dd
