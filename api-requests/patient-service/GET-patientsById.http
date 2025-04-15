@@ -1,0 +1,4 @@
+### GET request to get a certain patient info based on their Id
+GET http://localhost:4000/patients/id/dda0b6d2-1fe3-4dfa-8cb9-52fbe17986a9
+
+###
