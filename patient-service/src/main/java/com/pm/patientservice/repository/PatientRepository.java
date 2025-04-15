@@ -40,4 +40,6 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
     );
 
     void deleteByEmail(@NotNull String email);
+
+    boolean existsByEmail(@NotNull String email);
 }
