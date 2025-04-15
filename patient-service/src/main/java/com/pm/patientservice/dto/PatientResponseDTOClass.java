@@ -2,6 +2,8 @@ package com.pm.patientservice.dto;
 
 public class PatientResponseDTOClass {
 
+    private String Id;
+
     private String firstName;
 
     private String lastName;
@@ -13,6 +15,14 @@ public class PatientResponseDTOClass {
     private String email;
 
     private String phone;
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        this.Id = id;
+    }
 
     public String getFirstName() {
         return firstName;
