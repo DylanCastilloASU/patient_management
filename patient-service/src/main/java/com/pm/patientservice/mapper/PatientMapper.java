@@ -77,8 +77,7 @@ public class PatientMapper {
         patient.setAddress(patientRequestDTORecord.address());
         patient.setEmail(patientRequestDTORecord.email());
         patient.setPhone(patientRequestDTORecord.phone());
-        LocalDate registeredDate = LocalDate.parse(patientRequestDTORecord.dateOfBirth());
-        patient.setRegistrationDate(registeredDate);
+        patient.setRegistrationDate(LocalDate.parse(patientRequestDTORecord.dateOfBirth()));
         return patient;
     }
 
@@ -104,8 +103,7 @@ public class PatientMapper {
         patient.setAddress(patientRequestDTOClass.getAddress());
         patient.setEmail(patientRequestDTOClass.getEmail());
         patient.setPhone(patientRequestDTOClass.getPhone());
-        LocalDate registeredDate = LocalDate.parse(patientRequestDTOClass.getRegisterDate());
-        patient.setRegistrationDate(registeredDate);
+        patient.setRegistrationDate(LocalDate.parse(patientRequestDTOClass.getRegisterDate()));
         return patient;
     }
 
