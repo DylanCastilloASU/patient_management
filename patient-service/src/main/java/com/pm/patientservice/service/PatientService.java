@@ -7,6 +7,7 @@ import com.pm.patientservice.mapper.PatientMapper;
 import com.pm.patientservice.model.Patient;
 import com.pm.patientservice.repository.PatientRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -90,18 +91,27 @@ public class PatientService {
     //UPDATE
     //I would like for this method to only update existing patients if they don't exist, I don't want it to create a new
     //patient. That is the task of createPatient.
-    public Patient updatePatient(UUID id, PatientRequestDTOClass patientRequestDTOClass) {
+    public PatientResponseDTOClass updatePatient(UUID id, PatientRequestDTOClass patientRequestDTOClass) {
         Patient existingPatient = patientRepository.findById(id).orElseThrow(
                 () -> new InvalidIdException("There is no account with the id: " + id)
         );
-        Patient updatedPatient = patientMapper.toPatientFromPatientRequestDTOClass(patientRequestDTOClass);
         //checking to see if email is getting updated if so, check to see that the new email isn't associated to an
         //existing account
-        if(!existingPatient.getEmail().equals(updatedPatient.getEmail())) {
-            throw new NewEmailAlreadyExistsException(
-                    "There is already an account with the updated email: " + updatedPatient.getEmail());
+        if(!existingPatient.getEmail().equals(patientRequestDTOClass.getEmail())) {
+            if(patientRepository.existsByEmail(patientRequestDTOClass.getEmail())) {
+                throw new NewEmailAlreadyExistsException(
+                        "There is already an account with the updated email: " + patientRequestDTOClass.getEmail() +
+                                " old email: " + existingPatient.getEmail());
+            }
         }
-        return patientRepository.save(updatedPatient);
+        existingPatient.setFirstName(patientRequestDTOClass.getFirstName());
+        existingPatient.setLastName(patientRequestDTOClass.getLastName());
+        existingPatient.setDateOfBirth(LocalDate.parse(patientRequestDTOClass.getDateOfBirth()));
+        existingPatient.setAddress(patientRequestDTOClass.getAddress());
+        existingPatient.setEmail(patientRequestDTOClass.getEmail());
+        existingPatient.setPhone(patientRequestDTOClass.getPhone());
+        patientRepository.save(existingPatient);
+        return patientMapper.toPatientResponseDTOClassFromPatient(existingPatient);
     }
 
     //DELETE
@@ -115,6 +125,7 @@ public class PatientService {
     }
 
     //This is a custom method that was created in PatientRepository
+    @Transactional
     public void deletePatientByEmail(String email) {
         if(!patientRepository.existsByEmail(email)) {
             throw new InvalidEmailException("There is no account with the email: " + email);
