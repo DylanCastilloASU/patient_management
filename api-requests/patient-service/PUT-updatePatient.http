@@ -1,0 +1,14 @@
+### PUT request to update info of a patient
+PUT http://localhost:4000/patients/c09d0971-99a7-4243-862a-3622e316354a
+Content-Type: application/json
+
+{
+  "firstName": "JohnnyFunny",
+  "lastName": "Dough",
+  "dateOfBirth": "1234-08-24",
+  "address": "7352 Bear Hill Lane, Avon Lake, OH 44012",
+  "email": "Johnny.Dough@example.com",
+  "phone": "123-456-7890"
+}
+
+###
