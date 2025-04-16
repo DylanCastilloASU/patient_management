@@ -1,0 +1,4 @@
+### DELETE request to delete a patient based on their email address
+DELETE http://localhost:4000/patients/email/jane.smith@example.com
+
+###
