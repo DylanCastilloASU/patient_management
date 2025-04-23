@@ -97,8 +97,4 @@ public class PatientController {
         patientService.deletePatientByEmail(email);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
 }
