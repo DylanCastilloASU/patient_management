@@ -1,5 +1,6 @@
 ### POST request to create a new patient
-POST http://localhost:4000/patients
+### no longer http://localhost:4000/patients due to using an api gateway
+POST http://localhost:4003/api/patients
 Content-Type: application/json
 
 {
