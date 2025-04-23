@@ -1,4 +1,5 @@
 ### DELETE request to delete a patient based on their id
-DELETE http://localhost:4000/patients/id/123e4567-e89b-12d3-a456-426614174001
+### No longer http://localhost:4000/patients/id/e4e89dd1-d93a-4b2d-b4ec-c3dad6096952 due to now using an API gateway
+DELETE http://localhost:4003/api/patients/id/e4e89dd1-d93a-4b2d-b4ec-c3dad6096952
 
 ###
