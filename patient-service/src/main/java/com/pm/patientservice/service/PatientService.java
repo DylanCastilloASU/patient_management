@@ -3,6 +3,8 @@ package com.pm.patientservice.service;
 import com.pm.patientservice.dto.PatientRequestDTOClass;
 import com.pm.patientservice.dto.PatientResponseDTOClass;
 import com.pm.patientservice.exception.*;
+import com.pm.patientservice.grpc.BillingServiceGrpcClient;
+import com.pm.patientservice.kafka.KafkaProducer;
 import com.pm.patientservice.mapper.PatientMapper;
 import com.pm.patientservice.model.Patient;
 import com.pm.patientservice.repository.PatientRepository;
@@ -17,10 +19,19 @@ import java.util.UUID;
 public class PatientService {
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final BillingServiceGrpcClient billingServiceGrpcClient;
+    private final KafkaProducer kafkaProducer;
 
-    public PatientService(PatientRepository patientRepository, PatientMapper patientMapper) {
+    public PatientService(
+            PatientRepository patientRepository,
+            PatientMapper patientMapper,
+            BillingServiceGrpcClient billingServiceGrpcClient,
+            KafkaProducer kafkaProducer
+    ) {
         this.patientRepository = patientRepository;
         this.patientMapper = patientMapper;
+        this.billingServiceGrpcClient = billingServiceGrpcClient;
+        this.kafkaProducer = kafkaProducer;
     }
 
     /*
@@ -37,10 +48,21 @@ public class PatientService {
                     "An account with this email already exists " + patientRequestDTOClass.getEmail()
             );
         }
+        //making the given info into a patient object
         Patient newPatient = patientMapper.toPatientFromPatientRequestDTOClass(patientRequestDTOClass);
+        //saving the patient object into the database
         patientRepository.save(newPatient);
-        return patientMapper.toPatientResponseDTOClassFromPatient(newPatient);
+        //calling the billing service microservice via a GRPC API connection and providing the info from patient object
+        billingServiceGrpcClient.createBillingAccount(
+                newPatient.getId().toString(),
+                newPatient.getFirstName(),
+                newPatient.getLastName(),
+                newPatient.getEmail()
+        );
+        //sending info to a kafka topic so ...
+        kafkaProducer.sendEvent(newPatient);
 
+        return patientMapper.toPatientResponseDTOClassFromPatient(newPatient);
     }
 
     //READ
